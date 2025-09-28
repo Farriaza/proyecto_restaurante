@@ -1,0 +1,85 @@
+{% extends "menu/base.html" %}
+
+{% block content %}
+<div class="container text-center mt-5">
+  <!-- Título -->
+  <h1 class="mb-3">🍜 Bienvenido a Restaurante  <span class="text-primary">Beifong</span></h1>
+
+  <!-- Botón y redes sociales -->
+  <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+    <a href="{% url 'menu' %}" class="btn btn-primary btn-sm px-3">Ver Menú</a>
+    <a href="https://facebook.com" class="btn btn-outline-dark btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width:32px; height:32px;">
+      <i class="bi bi-facebook"></i>
+    </a>
+    <a href="https://instagram.com" class="btn btn-outline-dark btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width:32px; height:32px;">
+      <i class="bi bi-instagram"></i>
+    </a>
+    <a href="https://wa.me/56912345678" class="btn btn-outline-dark btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width:32px; height:32px;">
+      <i class="bi bi-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Descripción -->
+  <p class="lead mx-auto" style="max-width: 700px; font-size: 1rem;">
+    Ven y <strong>descubre la verdadera esencia de la gastronomía china</strong> en nuestro restaurante. 
+    Cada plato es preparado con <em>recetas tradicionales</em>, ingredientes frescos y el auténtico sabor oriental 
+    que te hará vivir una <strong>experiencia única, llena de aromas, colores y sabores inolvidables</strong>.  
+    ¡Déjate sorprender por nuestra pasión por la cocina y disfruta de un viaje culinario sin salir de la ciudad!
+  </p>
+</div>   
+
+
+    <hr class="my-5">
+
+    <h2 class="mb-4">Platos destacados</h2>
+    <div class="row">
+        {% for plato in destacados|slice:":3" %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if plato.imagen %}
+                    <!-- Imagen con tamaño fijo y adaptación -->
+                    <div style="width:100%; height:250px; overflow:hidden;">
+                        <img src="{{ plato.imagen.url }}" 
+                             class="card-img-top" 
+                             alt="{{ plato.nombre }}" 
+                             style="width:100%; height:100%; object-fit:cover; border-radius:5px;">
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ plato.nombre }}</h5>
+
+                    <!-- Botón desplegable de descripción -->
+                    <button class="btn btn-sm btn-outline-info mb-2" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#descripcionDestacado{{ plato.id }}" 
+                            aria-expanded="false" 
+                            aria-controls="descripcionDestacado{{ plato.id }}">
+                        Leer descripción
+                    </button>
+
+                    <!-- Descripción desplegable -->
+                    <div class="collapse mt-2" id="descripcionDestacado{{ plato.id }}">
+                        <p class="card-text">{{ plato.descripcion }}</p>
+                    </div>
+
+                    <p class="card-text text-muted">
+                        <small>Categoría: {{ plato.categoria.nombre }}</small>
+                    </p>
+
+                    <p class="card-text"><strong>${{ plato.precio|floatformat:"0" }}</strong></p>
+
+                    {% if plato.estado == "disponible" %}
+                        <span class="badge bg-success">Disponible</span>
+                    {% else %}
+                        <span class="badge bg-danger">Agotado</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No hay platos destacados todavía.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

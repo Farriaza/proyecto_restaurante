@@ -1,0 +1,52 @@
+{% extends "menu/base.html" %}
+{% block title %}Carrito{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Carrito de Compras</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if carrito %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito %}
+                    <tr>
+                        <td>{{ item.nombre }}</td>
+                        <td>${{ item.precio|floatformat:0 }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>${{ item.precio|floatformat:0 }} x {{ item.cantidad }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="text-end">
+            <h4>Total: ${{ total|floatformat:0 }}</h4>
+            
+            <form method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" name="vaciar_carrito" class="btn btn-danger">Vaciar Carrito</button>
+            </form>
+            
+            <button class="btn btn-success">Realizar Pedido</button>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <p>Tu carrito está vacío.</p>
+            <a href="{% url 'menu' %}" class="btn btn-primary">Ver Menú</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

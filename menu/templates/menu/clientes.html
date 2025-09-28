@@ -1,0 +1,30 @@
+{% extends "menu/base.html" %}
+{% block title %}Clientes / Reseñas{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Reseñas de nuestros clientes</h1>
+
+<!-- Botón para ir al formulario -->
+<div class="mb-3">
+  <a href="{% url 'resenas' %}" class="btn btn-primary">
+    ✍️ Agregar una reseña
+  </a>
+</div>
+
+<!-- Listado de reseñas -->
+{% if resenas %}
+  {% for r in resenas %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ r.cliente.nombre }} — {{ r.titulo_plato }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Puntuación: ⭐ {{ r.puntuacion }}/5</h6>
+        <p class="card-text">{{ r.comentario }}</p>
+        <small class="text-muted">Publicado el {{ r.fecha|date:"d/m/Y H:i" }}</small>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Aún no hay reseñas. Sé el primero en dejar la tuya ✨</p>
+{% endif %}
+
+{% endblock %}

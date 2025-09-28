@@ -1,0 +1,99 @@
+{% extends "menu/base.html" %}
+{% block title %}Reseñas de Clientes{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">⭐ Reseñas de Nuestros Clientes</h1>
+
+    <!-- Botones de navegación -->
+    <div class="mb-4">
+        <a href="{% url 'agregar_resena' %}" class="btn btn-primary me-2">
+            ✍️ Agregar Reseña
+        </a>
+    </div>
+
+    <!-- Formulario para agregar reseña (en la misma página) -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Deja tu reseña</h5>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="titulo_plato" class="form-label">Plato que probaste (opcional)</label>
+                    <input type="text" class="form-control" id="titulo_plato" name="titulo_plato" placeholder="Ej: Arroz Chaufa, Pollo Kung Pao...">
+                </div>
+
+                <div class="mb-3">
+                    <label for="comentario" class="form-label">Tu experiencia</label>
+                    <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="¿Qué te pareció nuestro servicio y comida?" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="puntuacion" class="form-label">Puntuación</label>
+                    <select class="form-control" id="puntuacion" name="puntuacion" required>
+                        <option value="">Selecciona una puntuación</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                        <option value="4">⭐⭐⭐⭐ Muy Bueno</option>
+                        <option value="3">⭐⭐⭐ Bueno</option>
+                        <option value="2">⭐⭐ Regular</option>
+                        <option value="1">⭐ Malo</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de reseñas existentes -->
+    <h3 class="mb-3">Reseñas de Nuestros Clientes</h3>
+    
+    {% if resenas %}
+        {% for resena in resenas %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title">{{ resena.cliente.nombre }}</h5>
+                        <span class="badge bg-warning text-dark">⭐ {{ resena.puntuacion }}/5</span>
+                    </div>
+                    
+                    {% if resena.titulo_plato %}
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <strong>Plato:</strong> {{ resena.titulo_plato }}
+                        </h6>
+                    {% endif %}
+                    
+                    <p class="card-text mt-3">{{ resena.comentario }}</p>
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            Publicado el {{ resena.fecha|date:"d/m/Y" }} a las {{ resena.fecha|date:"H:i" }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info text-center">
+            <h4>😊 Aún no hay reseñas</h4>
+            <p class="mb-0">¡Sé el primero en compartir tu experiencia con nosotros!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

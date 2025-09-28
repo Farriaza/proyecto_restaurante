@@ -1,0 +1,45 @@
+{% extends "menu/base.html" %}
+{% block title %}Platos y Menús{% endblock %}
+
+{% block content %}
+<h2>🍽️ Platos y Menús Disponibles</h2>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>Nombre del Plato</th>
+            <th>Categoría</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for plato in platos %}
+        <tr>
+            <td>{{ plato.nombre }}</td>
+            <td>
+                {# Ejemplo de categorías: Platos, Colaciones, Menú Familiar, Agregados, Bebestibles #}
+                {{ plato.categoria }}
+            </td>
+            <td>{{ plato.descripcion }}</td>
+            <td>${{ plato.precio }}</td>
+            <td>{{ plato.stock }}</td>
+            <td>
+                <form method="post" action="{% url 'agregar_al_carrito' plato.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-success">
+                        🛒 Agregar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center">No hay platos registrados en el menú</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

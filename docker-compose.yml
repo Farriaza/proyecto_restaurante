@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./media:/app/media 
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=proyectorestaurante.settings
+    command: python manage.py runserver 0.0.0.0:8000

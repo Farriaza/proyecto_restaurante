@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Beifong{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/jabali.png' %}" type="image/png">
+  
+  <style>
+    /* Navbar siempre visible en top */
+    .navbar-fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1030;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Ajusta el contenido para no quedar debajo de la navbar */
+    body {
+      padding-top: 70px; /* altura de navbar */
+      padding-bottom: 60px; /* deja espacio para el footer */
+    }
+
+    /* Móvil: solo íconos */
+    .navbar-nav.d-md-none .nav-link {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    /* Footer */
+    footer {
+      background: #f8f9fa;
+      border-top: 1px solid #e5e5e5;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 0;   
+      font-size: 0.7rem;
+      text-align: center;
+      z-index: 1030;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light navbar-fixed">
+  <div class="container">
+    <!-- Logo + texto -->
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+      <img src="{% static 'img/logo2.png' %}" 
+           alt="Logo Beifong" 
+           width="150" height="70" 
+           class="me-2">
+    </a>
+
+    <!-- Menú escritorio -->
+    <ul class="navbar-nav ms-auto d-none d-md-flex">
+      <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Inicio</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'menu' %}"><i class="bi bi-journal-text"></i> Menú</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'resenas' %}"><i class="bi bi-star-fill"></i> Reseñas</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'ver_carrito' %}"><i class="bi bi-cart-fill"></i> Carrito</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="bi bi-envelope-fill"></i> Contacto</a></li>
+      <li class="nav-item"><a class="nav-link" href="/admin/"><i class="bi bi-person-badge-fill"></i> Admin</a></li>
+    </ul>
+
+    <!-- Menú móvil solo íconos -->
+    <ul class="navbar-nav flex-row d-flex d-md-none">
+      <li class="nav-item">
+        <a class="nav-link px-2" href="{% url 'index' %}" title="Inicio"><i class="bi bi-house-door-fill"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" href="{% url 'menu' %}" title="Menú"><i class="bi bi-journal-text"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" href="{% url 'resenas' %}" title="Reseñas"><i class="bi bi-star-fill"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" href="{% url 'ver_carrito' %}" title="Carrito"><i class="bi bi-cart-fill"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" href="{% url 'contacto' %}" title="Contacto"><i class="bi bi-envelope-fill"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" href="/admin/" title="Admin"><i class="bi bi-person-badge-fill"></i></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Contenedor principal -->
+<div class="container mt-4">
+  <!-- Mensajes de Django -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Contenido específico de cada página -->
+  {% block content %}{% endblock %}
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="text-center" style="font-size: 0.7rem; padding: 2px 0; max-width: 600px; margin: 0 auto;">
+    © 2025 Restaurante Beifong | Todos los derechos reservados
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

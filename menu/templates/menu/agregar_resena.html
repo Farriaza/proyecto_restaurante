@@ -1,0 +1,23 @@
+{% extends "menu/base.html" %}
+{% block title %}Agregar reseña{% endblock %}
+
+{% block content %}
+<h1>Deja tu reseña</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-2"><input class="form-control" name="nombre" placeholder="Tu nombre" required></div>
+  <div class="mb-2"><input class="form-control" type="email" name="email" placeholder="Tu email" required></div>
+  <div class="mb-2">
+    <select class="form-control" name="plato_id" required>
+      <option value="">Elige un plato</option>
+      {% for plato in platos %}
+        <option value="{{ plato.id }}">{{ plato.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-2"><textarea class="form-control" name="comentario" placeholder="Tu reseña" rows="3"></textarea></div>
+  <div class="mb-2"><input class="form-control" name="puntuacion" type="number" min="1" max="5" value="5"></div>
+  <button class="btn btn-primary" type="submit">Enviar reseña</button>
+</form>
+{% endblock %}
